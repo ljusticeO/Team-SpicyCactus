@@ -22,4 +22,10 @@ class DriversTest {
         driver.setDriver_id(1);
         assertTrue(drivers.driverExists(driver));
     }
+
+    @Test
+    void testDriverOnline() {
+        assertFalse(drivers.driverOnline(2));
+        assertTrue(drivers.driverOnline(1));
+    }
 }
