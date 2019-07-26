@@ -121,16 +121,39 @@ public class WebLayer {
         }
     }
 
-    @GetMapping("/driver/assign")
-    public ResponseEntity apiAddCar() {
-        return null;
+    @GetMapping("/deselect/{driverId}")
+    public ResponseEntity apiDeslectCar(@PathVariable(name = "driverId") int driverId){
+
+        for(Driver currentDriver : driverRepo.findAll()) {
+            if (currentDriver.getDriver_id() == driverId) {
+                currentDriver.setCar_id(0);
+                driverRepo.save(currentDriver);
+                return ResponseEntity.status(HttpStatus.OK).body(currentDriver);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Does Not Exist");
     }
 
+    @PostMapping("/assign/")
+    public ResponseEntity apiSelectCar(@RequestParam(name = "driverId", required = true) int driverId, @RequestParam(name = "carId", required = true) int carId){
+
+        for(Driver currentDriver : driverRepo.findAll()) {
+            if (currentDriver.getDriver_id() == driverId) {
+                currentDriver.setCar_id(carId);
+                driverRepo.save(currentDriver);
+                return ResponseEntity.status(HttpStatus.OK).body(currentDriver);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Does Not Exist");
+    }
+  
     @PostMapping("/driver/status")
     public ResponseEntity apiOnlineOffline(@RequestParam(name="id") int id, @RequestParam(name = "online") Boolean online) {
         driverCheck.driverOnline(driverRepo, id, online);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
+
+    //----------------------------------- MOCK CARD
 
     public List<Car> mockAPICars(){
         List<Car> carList = List.of(
