@@ -27,5 +27,13 @@ public class Drivers {
         return driverRepo.findById(driver.getDriver_id()).isPresent();
     }
 
+    /**
+     * Checks Drivers Online Status
+     * @param id - Driver_ID
+     * @return true or false
+     */
+    public boolean driverOnline(int id) {
+        return driverRepo.findById(id).get().isOnline_status();
+    }
 
 }
