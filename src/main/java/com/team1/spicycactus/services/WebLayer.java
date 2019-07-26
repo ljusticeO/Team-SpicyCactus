@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/drivers")
 public class WebLayer {
 
-    @GetMapping
+//    @GetMapping
 
 
 //    http://localhost:8080/v1/drivers POST - Create Driver
