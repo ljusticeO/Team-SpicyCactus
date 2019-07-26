@@ -12,15 +12,17 @@ public class Driver {
     private LocalDateTime date_coordinate_updated;
     private boolean online_status;
     private int car_id;
+    private long drivers_license_number;
 
     public Driver() {
     }
 
-    public Driver(String geo_coordinate, LocalDateTime date_coordinate_updated, boolean online_status, int car_id) {
+    public Driver(String geo_coordinate, LocalDateTime date_coordinate_updated, boolean online_status, int car_id, long drivers_license_number) {
         this.geo_coordinate = geo_coordinate;
         this.date_coordinate_updated = date_coordinate_updated;
         this.online_status = online_status;
         this.car_id = car_id;
+        this.drivers_license_number = drivers_license_number;
     }
 
     public int getDriver_id() {
