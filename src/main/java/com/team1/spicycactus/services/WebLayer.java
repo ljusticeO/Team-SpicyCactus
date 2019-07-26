@@ -1,20 +1,56 @@
 package com.team1.spicycactus.services;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.team1.spicycactus.bean.Car;
+import com.team1.spicycactus.bean.Driver;
+import com.team1.spicycactus.dao.DriverRepo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/drivers")
 public class WebLayer {
 
-//    @GetMapping
+    @Autowired
+    DriverRepo driverRepo;
 
+    //Create Driver
+    @PostMapping("/")
+    public Driver apiCreateDriver(@RequestParam(name = "geocoordinate", required = true) String geocoordinate, @RequestParam(name = "carId", required = true) int carId){
+        Driver newDriver = new Driver(geocoordinate, LocalDateTime.now(), true, carId);
+        driverRepo.save(newDriver);
+        return newDriver;
+    }
 
-//    http://localhost:8080/v1/drivers POST - Create Driver
-//    http://localhost:8080/v1/drivers GET - Get drivers
-//    http://localhost:8080/v1/drivers/{driverId} GET - Get Driver by ID
-//    http://localhost:8080/v1/drivers/selectcar/{driverId} GET - Get Car from driver id
-//    http://localhost:8080/v1/drivers/criteria/automaticElectric GET - Get cars that are automatic
+    //Get Drivers
+    @GetMapping("/")
+    public List<Driver> apiGetAllDrivers(){
+        return driverRepo.findAll();
+    }
+
+    //Get Driver By ID
+    @GetMapping("/{driverId}")
+    public Driver apiGetDriver(@PathVariable(name = "driverId") int driverId){
+        for(Driver currentDriver : driverRepo.findAll()){
+            if(currentDriver.getDriver_id() == driverId){
+                return currentDriver;
+            }
+        }
+        return null;
+    }
+
+    //Get Driver Car by Driver ID
+    @GetMapping("/selectcar/{driverId}")
+    public Car apiGetCar(@PathVariable(name = "driverId") int driverId){
+
+    }
+
+    //Get Automatic Cars
+    @GetMapping("/criteria/automaticElectric")
+    public List<Car> apiGetElectricCars(){
+
+    }
 
 }
