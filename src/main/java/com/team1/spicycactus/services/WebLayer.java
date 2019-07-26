@@ -28,13 +28,13 @@ public class WebLayer {
     public ResponseEntity apiCreateDriver(@RequestParam(name = "geoCoordinate", required = true) String geoCoordinate, @RequestParam(name = "carId", required = true) int carId, @RequestParam(name = "licenseNumber", required = true) long licenseNumber){
         Driver newDriver = new Driver(geoCoordinate, LocalDateTime.now(), true, carId, licenseNumber);
 
-        if(newDriver.getDrivers_license_number() == licenseNumber){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Driver Already Exists");
+        for(Driver currentDriver : driverRepo.findAll()) {
+            if (currentDriver.getDrivers_license_number() == licenseNumber) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Driver Already Exists");
+            }
         }
-        else {
-            driverRepo.save(newDriver);
-            return ResponseEntity.status(HttpStatus.OK).body(newDriver);
-        }
+        driverRepo.save(newDriver);
+        return ResponseEntity.status(HttpStatus.OK).body(newDriver);
     }
 
     //Get Drivers
