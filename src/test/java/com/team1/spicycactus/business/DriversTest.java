@@ -1,23 +1,25 @@
 package com.team1.spicycactus.business;
 
-import org.junit.Before;
-import org.junit.Test;
+import com.team1.spicycactus.bean.Driver;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DriversTest {
 
-    @Before
-    void beforeEach() {
-
-    }
-
+    @Autowired
+    Drivers drivers;
 
     @Test
-    void testDriverFinder() {
-
+    void driverExists() {
+        assertTrue(drivers.driverExists(1));
     }
 
-
+    @Test
+    void testDriverExists() {
+        Driver driver = new Driver();
+        driver.setDriver_id(1);
+        assertTrue(drivers.driverExists(driver));
+    }
 }
