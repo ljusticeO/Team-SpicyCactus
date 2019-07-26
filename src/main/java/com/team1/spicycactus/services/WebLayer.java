@@ -26,7 +26,7 @@ public class WebLayer {
         Driver newDriver = new Driver(geoCoordinate, LocalDateTime.now(), true, carId);
 
         if(newDriver.getGeo_coordinate().equals(newDriver.getGeo_coordinate())){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Driver Already Exists");
         }
         else {
             driverRepo.save(newDriver);
@@ -37,32 +37,42 @@ public class WebLayer {
     //Get Drivers
     @GetMapping("/")
     public ResponseEntity apiGetAllDrivers(){
-//        return driverRepo.findAll();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
+        if(driverRepo.findAll().size() == 0){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No Drivers Present In Fleet");
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK).body(driverRepo.findAll());
+        }
     }
 
     //Get Driver By ID
     @GetMapping("/{driverId}")
-    public Driver apiGetDriver(@PathVariable(name = "driverId") int driverId){
+    public ResponseEntity apiGetDriver(@PathVariable(name = "driverId") int driverId){
         for(Driver currentDriver : driverRepo.findAll()){
             if(currentDriver.getDriver_id() == driverId){
-                return currentDriver;
+                return ResponseEntity.status(HttpStatus.OK).body(currentDriver);
             }
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Not Present In Fleet");
     }
 
-//    //Get Driver Car by Driver ID
-//    @GetMapping("/selectcar/{driverId}")
-//    public Car apiGetCar(@PathVariable(name = "driverId") int driverId){
-//
-//    }
-//
-//    //Get Automatic Cars
-//    @GetMapping("/criteria/automaticElectric")
-//    public List<Car> apiGetElectricCars(){
-//
-//    }
+    //Get Driver Car by Driver ID
+    @GetMapping("/selectcar/{driverId}")
+    public ResponseEntity apiGetCar(@PathVariable(name = "driverId") int driverId){
+        List<Car> mockCarList = mockAPICars();
+        if(mockCarList.size() == 0){
+            return ResponseEntity.status(HttpStatus.OK).body(currentDriver);
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.OK).body(mockCarList);
+        }
+    }
+
+    //Get Automatic Cars
+    @GetMapping("/criteria/automaticElectric")
+    public List<Car> apiGetElectricCars(){
+        return null;
+    }
 
     public List<Car> mockAPICars(){
         List<Car> carList = List.of(
