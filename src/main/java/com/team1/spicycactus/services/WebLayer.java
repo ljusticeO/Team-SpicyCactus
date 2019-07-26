@@ -22,8 +22,8 @@ public class WebLayer {
 
     //Create Driver
     @PostMapping("/")
-    public ResponseEntity apiCreateDriver(@RequestParam(name = "geocoordinate", required = true) String geocoordinate, @RequestParam(name = "carId", required = true) int carId){
-        Driver newDriver = new Driver(geocoordinate, LocalDateTime.now(), true, carId);
+    public ResponseEntity apiCreateDriver(@RequestParam(name = "geoCoordinate", required = true) String geoCoordinate, @RequestParam(name = "carId", required = true) int carId){
+        Driver newDriver = new Driver(geoCoordinate, LocalDateTime.now(), true, carId);
 
         if(newDriver.getGeo_coordinate().equals(newDriver.getGeo_coordinate())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("");
