@@ -25,10 +25,10 @@ public class WebLayer {
 
     //Create Driver
     @PostMapping("/")
-    public ResponseEntity apiCreateDriver(@RequestParam(name = "geoCoordinate", required = true) String geoCoordinate, @RequestParam(name = "carId", required = true) int carId, @RequestParam(name = "licensePlate", required = true) long licensePlate){
-        Driver newDriver = new Driver(geoCoordinate, LocalDateTime.now(), true, carId, licensePlate);
+    public ResponseEntity apiCreateDriver(@RequestParam(name = "geoCoordinate", required = true) String geoCoordinate, @RequestParam(name = "carId", required = true) int carId, @RequestParam(name = "licenseNumber", required = true) long licenseNumber){
+        Driver newDriver = new Driver(geoCoordinate, LocalDateTime.now(), true, carId, licenseNumber);
 
-        if(newDriver.getGeo_coordinate().equals(newDriver.getGeo_coordinate())){
+        if(newDriver.getDrivers_license_number() == licenseNumber){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Driver Already Exists");
         }
         else {
