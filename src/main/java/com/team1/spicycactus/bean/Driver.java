@@ -3,6 +3,9 @@ package com.team1.spicycactus.bean;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * A Driver object used by Services and Drivers
+ */
 @Entity
 public class Driver {
     @Id
@@ -13,7 +16,10 @@ public class Driver {
     private boolean online_status;
     private int car_id;
     private long drivers_license_number;
-
+    
+    /**
+     * Constructors
+     */
     public Driver() {
     }
 
@@ -25,48 +31,54 @@ public class Driver {
         this.drivers_license_number = drivers_license_number;
     }
 
+    /**
+     * getters
+     */
     public int getDriver_id() {
         return driver_id;
-    }
-
-    public void setDriver_id(int driver_id) {
-        this.driver_id = driver_id;
     }
 
     public String getGeo_coordinate() {
         return geo_coordinate;
     }
 
-    public void setGeo_coordinate(String geo_coordinate) {
-        this.geo_coordinate = geo_coordinate;
-    }
-
     public LocalDateTime getDate_coordinate_updated() {
         return date_coordinate_updated;
-    }
-
-    public void setDate_coordinate_updated(LocalDateTime date_coordinate_updated) {
-        this.date_coordinate_updated = date_coordinate_updated;
     }
 
     public boolean isOnline_status() {
         return online_status;
     }
 
-    public void setOnline_status(boolean online_status) {
-        this.online_status = online_status;
-    }
-
     public int getCar_id() {
         return car_id;
     }
 
-    public void setCar_id(int car_id) {
-        this.car_id = car_id;
-    }
-
     public long getDrivers_license_number() {
         return drivers_license_number;
+    }
+
+    /**
+     * setters
+     */
+    public void setDriver_id(int driver_id) {
+        this.driver_id = driver_id;
+    }
+
+    public void setGeo_coordinate(String geo_coordinate) {
+        this.geo_coordinate = geo_coordinate;
+    }
+
+    public void setDate_coordinate_updated(LocalDateTime date_coordinate_updated) {
+        this.date_coordinate_updated = date_coordinate_updated;
+    }
+
+    public void setOnline_status(boolean online_status) {
+        this.online_status = online_status;
+    }
+
+    public void setCar_id(int car_id) {
+        this.car_id = car_id;
     }
 
     public void setDrivers_license_number(long drivers_license_number) {
