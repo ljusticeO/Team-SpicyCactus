@@ -20,10 +20,12 @@ public class WebLayer {
     @Autowired
     DriverRepo driverRepo;
 
+
+
     //Create Driver
     @PostMapping("/")
-    public ResponseEntity apiCreateDriver(@RequestParam(name = "geoCoordinate", required = true) String geoCoordinate, @RequestParam(name = "carId", required = true) int carId){
-        Driver newDriver = new Driver(geoCoordinate, LocalDateTime.now(), true, carId);
+    public ResponseEntity apiCreateDriver(@RequestParam(name = "geoCoordinate", required = true) String geoCoordinate, @RequestParam(name = "carId", required = true) int carId, @RequestParam(name = "licensePlate", required = true) long licensePlate){
+        Driver newDriver = new Driver(geoCoordinate, LocalDateTime.now(), true, carId, licensePlate);
 
         if(newDriver.getGeo_coordinate().equals(newDriver.getGeo_coordinate())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Driver Already Exists");
@@ -57,16 +59,16 @@ public class WebLayer {
     }
 
     //Get Driver Car by Driver ID
-    @GetMapping("/selectcar/{driverId}")
-    public ResponseEntity apiGetCar(@PathVariable(name = "driverId") int driverId){
-        List<Car> mockCarList = mockAPICars();
-        if(mockCarList.size() == 0){
-            return ResponseEntity.status(HttpStatus.OK).body(currentDriver);
-        }
-        else{
-            return ResponseEntity.status(HttpStatus.OK).body(mockCarList);
-        }
-    }
+//    @GetMapping("/selectcar/{driverId}")
+//    public ResponseEntity apiGetCar(@PathVariable(name = "driverId") int driverId){
+//        List<Car> mockCarList = mockAPICars();
+//        if(mockCarList.size() == 0){
+//            return ResponseEntity.status(HttpStatus.OK).body(currentDriver);
+//        }
+//        else{
+//            return ResponseEntity.status(HttpStatus.OK).body(mockCarList);
+//        }
+//    }
 
     //Get Automatic Cars
     @GetMapping("/criteria/automaticElectric")
