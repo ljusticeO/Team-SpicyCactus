@@ -121,6 +121,17 @@ public class WebLayer {
         }
     }
 
+    @GetMapping("/driver/assign")
+    public ResponseEntity apiAddCar() {
+        return null;
+    }
+
+    @PostMapping("/driver/status")
+    public ResponseEntity apiOnlineOffline(@RequestParam(name="id") int id, @RequestParam(name = "online") Boolean online) {
+        driverCheck.driverOnline(driverRepo, id, online);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
     public List<Car> mockAPICars(){
         List<Car> carList = List.of(
             new Car(1, "Cool Car Model", "Rainbow", "123456", 5, 4, "Big", true, "Automatic", "BMW"),
