@@ -1,12 +1,6 @@
 package com.team1.spicycactus.bean;
 
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class Car {
-    @Id
     private int car_id;
     private String model;
     private String color;
