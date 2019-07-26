@@ -23,7 +23,15 @@ public class WebLayer {
 
     Drivers driverCheck = new Drivers();
 
-    //Create Driver
+    /**
+     * Turns inputs into a Driver object and saves to Database
+     * If there is an existing driver with the license No. it will return a conflict status
+     * otherwise will return a OK status
+     * @param geoCoordinate - geoCoordinate String
+     * @param carId - CarID int
+     * @param licenseNumber - LicenseNumber Long
+     * @return ResponseEntity 200 - success, 403 - fail
+     */
     @PostMapping("/")
     public ResponseEntity apiCreateDriver(@RequestParam(name = "geoCoordinate", required = true) String geoCoordinate, @RequestParam(name = "carId", required = true) int carId, @RequestParam(name = "licenseNumber", required = true) long licenseNumber){
         Driver newDriver = new Driver(geoCoordinate, LocalDateTime.now(), true, carId, licenseNumber);
@@ -37,7 +45,10 @@ public class WebLayer {
         return ResponseEntity.status(HttpStatus.OK).body(newDriver);
     }
 
-    //Get Drivers
+    /**
+     * get all drivers
+     * @return ResponseEntity 400 bad request or 200 OK and List of Drivers
+     */
     @GetMapping("/")
     public ResponseEntity apiGetAllDrivers(){
         if(driverRepo.findAll().size() == 0){
@@ -48,7 +59,11 @@ public class WebLayer {
         }
     }
 
-    //Get Driver By ID
+    /**
+     * Get a single driver by id
+     * @param driverId - driverID int
+     * @return ResponseEntity 400 bad request or 200 OK and Driver object
+     */
     @GetMapping("/{driverId}")
     public ResponseEntity apiGetDriver(@PathVariable(name = "driverId") int driverId){
 
@@ -60,7 +75,11 @@ public class WebLayer {
         }
     }
 
-//    Get Driver Car by Driver ID
+    /**
+     * gets driver object by ID and Car Object and combines into DriverAndCar object
+     * @param driverId - driverID int
+     * @return ResponseEntity 400 bad request or 200 OK and DriverAndCar object
+     */
     @GetMapping("/selectcar/{driverId}")
     public ResponseEntity apiGetCar(@PathVariable(name = "driverId") int driverId){
         List<Car> carList = mockAPICars();
@@ -82,7 +101,10 @@ public class WebLayer {
         }
     }
 
-    //Get Automatic Cars
+    /**
+     * Gets list of cars and selects only automatic cars
+     * @return ResponseEntity 403 forbidden or 200 OK and List of Automatic Car objects
+     */
     @GetMapping("/criteria/automaticElectric")
     public ResponseEntity apiGetElectricCars(){
         List<Car> carList = new ArrayList<>();
@@ -124,6 +146,12 @@ public class WebLayer {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Does Not Exist");
     }
+  
+    @PostMapping("/driver/status")
+    public ResponseEntity apiOnlineOffline(@RequestParam(name="id") int id, @RequestParam(name = "online") Boolean online) {
+        driverCheck.driverOnline(driverRepo, id, online);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
 
     //----------------------------------- MOCK CARD
 
@@ -136,5 +164,4 @@ public class WebLayer {
         );
         return carList;
     }
-
 }
