@@ -64,4 +64,12 @@ public class Driver {
     public void setCar_id(int car_id) {
         this.car_id = car_id;
     }
+
+    public long getDrivers_license_number() {
+        return drivers_license_number;
+    }
+
+    public void setDrivers_license_number(long drivers_license_number) {
+        this.drivers_license_number = drivers_license_number;
+    }
 }
