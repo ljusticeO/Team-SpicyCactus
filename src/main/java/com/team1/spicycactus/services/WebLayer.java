@@ -6,6 +6,7 @@ import com.team1.spicycactus.bean.DriverAndCar;
 import com.team1.spicycactus.business.Drivers;
 import com.team1.spicycactus.dao.DriverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -69,6 +70,24 @@ public class WebLayer {
 
         if(driverCheck.driverExists(driverRepo, driverId)){
             return ResponseEntity.status(HttpStatus.OK).body(driverRepo.findById(driverId));
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Not Present In Fleet");
+        }
+    }
+
+    /**
+     * DELETE a single driver by id
+     * @param driverId - driverID int
+     * @return ResponseEntity 400 bad request or 200 OK and Driver object
+     */
+    @RequestMapping(value = "/{driverId}", method = RequestMethod.DELETE)
+    public ResponseEntity apiDeleteDriver(@PathVariable("driverId") int driverId){
+
+        if(driverCheck.driverExists(driverRepo, driverId)){
+            Driver driver = driverRepo.findById(driverId).orElse(null);
+            driverRepo.delete(driver);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
         }
         else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Not Present In Fleet");
