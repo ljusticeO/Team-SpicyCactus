@@ -1,21 +1,20 @@
 package com.team1.spicycactus.business;
 
+import com.team1.spicycactus.bean.Car;
 import com.team1.spicycactus.bean.Driver;
+import com.team1.spicycactus.bean.DriverAndCar;
 import com.team1.spicycactus.dao.DriverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Drivers {
-
-    @Autowired
-    DriverRepo driverRepo;
 
     /**
      * Checks for driver in db by id
      * @param id - driverID
      * @return - true or false
      */
-    public boolean driverExists(int id){
-        return driverRepo.findById(id).isPresent();
+    public boolean driverExists(DriverRepo driverRepo, int id){
+        return driverRepo.existsById(id);
     }
 
     /**
@@ -23,7 +22,7 @@ public class Drivers {
      * @param driver - Driver object
      * @return true or false
      */
-    public boolean driverExists(Driver driver){
+    public boolean driverExists(DriverRepo driverRepo, Driver driver){
         return driverRepo.findById(driver.getDriver_id()).isPresent();
     }
 
@@ -32,7 +31,7 @@ public class Drivers {
      * @param id - Driver_ID
      * @return true or false
      */
-    public boolean driverOnline(int id) {
+    public boolean driverOnline(DriverRepo driverRepo, int id) {
         return driverRepo.findById(id).get().isOnline_status();
     }
 
