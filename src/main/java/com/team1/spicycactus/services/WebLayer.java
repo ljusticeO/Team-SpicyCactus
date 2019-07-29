@@ -6,6 +6,7 @@ import com.team1.spicycactus.bean.DriverAndCar;
 import com.team1.spicycactus.business.Drivers;
 import com.team1.spicycactus.dao.DriverRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +77,24 @@ public class WebLayer {
     }
 
     /**
+     * DELETE a single driver by id
+     * @param driverId - driverID int
+     * @return ResponseEntity 400 bad request or 200 OK and Driver object
+     */
+    @RequestMapping(value = "/{driverId}", method = RequestMethod.DELETE)
+    public ResponseEntity apiDeleteDriver(@PathVariable("driverId") int driverId){
+
+        if(driverCheck.driverExists(driverRepo, driverId)){
+            Driver driver = driverRepo.findById(driverId).orElse(null);
+            driverRepo.delete(driver);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }
+        else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Not Present In Fleet");
+        }
+    }
+
+    /**
      * gets driver object by ID and Car Object and combines into DriverAndCar object
      * @param driverId - driverID int
      * @return ResponseEntity 400 bad request or 200 OK and DriverAndCar object
@@ -120,6 +139,40 @@ public class WebLayer {
             return ResponseEntity.status(HttpStatus.OK).body(carList);
         }
     }
+
+    @GetMapping("/deselect/{driverId}")
+    public ResponseEntity apiDeslectCar(@PathVariable(name = "driverId") int driverId){
+
+        for(Driver currentDriver : driverRepo.findAll()) {
+            if (currentDriver.getDriver_id() == driverId) {
+                currentDriver.setCar_id(0);
+                driverRepo.save(currentDriver);
+                return ResponseEntity.status(HttpStatus.OK).body(currentDriver);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Does Not Exist");
+    }
+
+    @PostMapping("/assign/")
+    public ResponseEntity apiSelectCar(@RequestParam(name = "driverId", required = true) int driverId, @RequestParam(name = "carId", required = true) int carId){
+
+        for(Driver currentDriver : driverRepo.findAll()) {
+            if (currentDriver.getDriver_id() == driverId) {
+                currentDriver.setCar_id(carId);
+                driverRepo.save(currentDriver);
+                return ResponseEntity.status(HttpStatus.OK).body(currentDriver);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Driver Does Not Exist");
+    }
+  
+    @PostMapping("/driver/status")
+    public ResponseEntity apiOnlineOffline(@RequestParam(name="id") int id, @RequestParam(name = "online") Boolean online) {
+        driverCheck.driverOnline(driverRepo, id, online);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    //----------------------------------- MOCK CARD
 
     public List<Car> mockAPICars(){
         List<Car> carList = List.of(

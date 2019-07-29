@@ -31,8 +31,11 @@ public class Drivers {
      * @param id - Driver_ID
      * @return true or false
      */
-    public boolean driverOnline(DriverRepo driverRepo, int id) {
-        return driverRepo.findById(id).get().isOnline_status();
+    public boolean driverOnline(DriverRepo driverRepo, int id, Boolean online) {
+        Driver driver = driverRepo.findById(id).orElse(null);
+        driver.setOnline_status(online);
+        driverRepo.save(driver);
+        return true;
     }
 
 }
